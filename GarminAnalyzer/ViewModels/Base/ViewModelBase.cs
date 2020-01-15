@@ -14,6 +14,7 @@ namespace GarminAnalyzer.ViewModels.Base
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
     public class PointItem : ViewModelBase
     {
         public string Name { get; set; }

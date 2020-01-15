@@ -14,14 +14,12 @@ namespace GarminAnalyzer.Util
 
             if (values.Length == 2 && values[0] is MapBase && values[1] is Point)
             {
-                var parentMap = (MapBase)values[0];
-                var position = (Point?)values[1];
+                var parentMap = (MapBase) values[0];
+                var position = (Point?) values[1];
 
                 if (position.Value.X >= 0d && position.Value.X <= parentMap.ActualWidth &&
                     position.Value.Y >= 0d && position.Value.Y <= parentMap.ActualHeight)
-                {
                     visibility = Visibility.Visible;
-                }
             }
 
             return visibility;

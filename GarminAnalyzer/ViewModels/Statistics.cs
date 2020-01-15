@@ -10,7 +10,7 @@ namespace GarminAnalyzer.ViewModels
 
         public double TotalDistance { get; set; }
         public double TotalAltitude { get; set; }
-        
+
         public double MaxSpeed { get; set; }
         public double MaxHeartRate { get; set; }
     }

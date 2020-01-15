@@ -18,18 +18,18 @@ namespace GarminAnalyzer.Services
             _activityRepository = activityRepository;
             _wayRepository = wayRepository;
         }
-        
+
         public Statistics CalculateStatistics(IEnumerable<TrackingPoint> trackingPoints)
         {
             var allActivities = _activityRepository.GetAllActivities();
             var enumerable = trackingPoints as TrackingPoint[] ?? trackingPoints.ToArray();
-            
+
             var countAll = enumerable.Length;
-            int countEasy =
+            var countEasy =
                 enumerable.Count(a => a.DistanceConnection?.NearestWay?.Difficulty == "easy");
-            int countIntermediate = enumerable.Count(a =>
+            var countIntermediate = enumerable.Count(a =>
                 a.DistanceConnection?.NearestWay?.Difficulty == "intermediate");
-            int countAdvanced = enumerable.Count(a =>
+            var countAdvanced = enumerable.Count(a =>
                 a.DistanceConnection?.NearestWay?.Difficulty == "advanced");
 
             var activities = allActivities as Lap[] ?? allActivities.ToArray();
@@ -54,7 +54,7 @@ namespace GarminAnalyzer.Services
                 TotalLiftCount = _wayRepository.GetTotalLiftCount(),
                 ChairLiftCount = _wayRepository.GetChairLiftCount(),
                 GondolaLiftCount = _wayRepository.GetGondolaLiftCount(),
-                
+
                 TakenLiftCount = takenLifts.Distinct().Count()
             };
             return statistics;

@@ -21,11 +21,11 @@ namespace GarminAnalyzer.Bootstrap
 
             builder.RegisterType<ActivityRepository>().As<IActivityRepository>().SingleInstance();
             builder.RegisterType<WayRepository>().As<IWayRepository>().SingleInstance();
-            
-            
+
+
             builder.RegisterType<OsmParser>().As<IOsmParser>();
             builder.RegisterType<TcxParser>().As<IFileParser>();
-            
+
             builder.RegisterType<LiftFinder>().As<ILiftFinder>();
             builder.RegisterType<SlopeFinder>().As<ISlopeFinder>();
             builder.RegisterType<SlopeNodeChecker>().As<ISlopeNodeChecker>();

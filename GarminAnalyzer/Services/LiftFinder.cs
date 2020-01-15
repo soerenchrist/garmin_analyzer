@@ -1,7 +1,6 @@
 ﻿using System.Device.Location;
 using System.Linq;
 using GarminAnalyzer.Models;
-using GarminAnalyzer.Repositories;
 using GarminAnalyzer.Repositories.Abstractions;
 using GarminAnalyzer.Services.Abstractions;
 
@@ -15,13 +14,13 @@ namespace GarminAnalyzer.Services
         {
             _wayRepository = wayRepository;
         }
-        
+
         public Way GetLiftForStartPoint(Position position)
         {
             if (position == null) return null;
 
             var lifts = _wayRepository.GetLifts();
-            
+
             var minDistance = double.MaxValue;
             Way minLift = null;
             var geoPosition = new GeoCoordinate(position.Latitude, position.Longitude);

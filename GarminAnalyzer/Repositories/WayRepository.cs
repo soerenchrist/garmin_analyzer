@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using GarminAnalyzer.Models;
 using GarminAnalyzer.Repositories.Abstractions;
-using GarminAnalyzer.Services.Abstractions;
 using Newtonsoft.Json;
 
 namespace GarminAnalyzer.Repositories
@@ -17,7 +16,7 @@ namespace GarminAnalyzer.Repositories
             var textPistes = File.ReadAllText("pistes");
             _ways = JsonConvert.DeserializeObject<List<Way>>(textPistes);
         }
-        
+
         public IEnumerable<Way> GetAllWays()
         {
             return _ways;
@@ -32,7 +31,7 @@ namespace GarminAnalyzer.Repositories
         {
             return _ways.Where(w => w.Type != "downhill");
         }
-        
+
         public int GetTotalLiftCount()
         {
             var pistes = GetAllWays();

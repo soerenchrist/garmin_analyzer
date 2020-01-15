@@ -16,36 +16,6 @@ namespace GarminAnalyzer.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        #region ViewModels
-        public DisplayOptions DisplayOptions { get; set; } = new DisplayOptions();
-        public Statistics Statistics { get; set; } = new Statistics();
-        public LiftStatistics LiftStatistics { get; set; } = new LiftStatistics();
-        public MapItems MapItems { get; set; } = new MapItems();
-        public MapLayers MapLayers { get; } = new MapLayers();
-
-
-        #endregion
-
-        #region Properties
-
-        public Lap SelectedLap { get; set; }
-        public ObservableCollection<Lap> Laps { get; set; }
-        public Way SelectedLift { get; set; }
-        public ObservableCollection<Way> TakenLifts { get; set; } = new ObservableCollection<Way>();
-        
-        #endregion
-
-        #region Fields
-        
-        private readonly ILiftFinder _liftFinder;
-        private readonly IWayRepository _wayRepository;
-        private readonly ISlopeNodeChecker _slopeNodeChecker;
-        private readonly IStatsService _statsService;
-
-        #endregion
-        
-
-
         public MainViewModel(IWayRepository wayRepository, ILiftFinder liftFinder,
             IActivityRepository activityRepository, ISlopeNodeChecker slopeNodeChecker,
             IStatsService statsService)
@@ -74,38 +44,27 @@ namespace GarminAnalyzer.ViewModels
                 if (args.PropertyName != null && args.PropertyName.StartsWith("Show"))
                 {
                     TakenLifts = new ObservableCollection<Way>();
-                    
+
                     MapItems.Reset();
-                    
+
                     Laps = new ObservableCollection<Lap>();
                     Statistics = new Statistics();
 
 
                     var allActivities = new List<Lap>();
                     if (DisplayOptions.ShowTuesday)
-                    {
                         allActivities.AddRange(activityRepository.GetSingleDay(Day.Tuesday));
-                    }
 
                     if (DisplayOptions.ShowWednesday)
-                    {
                         allActivities.AddRange(activityRepository.GetSingleDay(Day.Wednesday));
-                    }
 
                     if (DisplayOptions.ShowThursday)
-                    {
                         allActivities.AddRange(activityRepository.GetSingleDay(Day.Thursday));
-                    }
 
-                    if (DisplayOptions.ShowFriday)
-                    {
-                        allActivities.AddRange(activityRepository.GetSingleDay(Day.Friday));
-                    }
+                    if (DisplayOptions.ShowFriday) allActivities.AddRange(activityRepository.GetSingleDay(Day.Friday));
 
                     if (DisplayOptions.ShowSaturday)
-                    {
                         allActivities.AddRange(activityRepository.GetSingleDay(Day.Saturday));
-                    }
 
                     var allTrackingPoints = allActivities.SelectMany(a => a.TrackingPoints);
 
@@ -226,7 +185,7 @@ namespace GarminAnalyzer.ViewModels
                 var pointItem = new PointItem
                 {
                     Location = node.Position.ToLocation(),
-                    Name = node.ToString(),
+                    Name = node.ToString()
                 };
                 switch (node.DistanceConnection.NearestWay.Difficulty)
                 {
@@ -255,28 +214,24 @@ namespace GarminAnalyzer.ViewModels
         private void ShowLapStartFlags(TrackingPoint firstPoint, int lapCounter)
         {
             if (!DisplayOptions.ShowLapStarts) return;
-            
+
             if (firstPoint?.Position != null)
-            {
                 MapItems.Pushpins.Add(new PointItem
                 {
                     Location = firstPoint.Position.ToLocation(),
                     Name = lapCounter + " Start"
                 });
-            }
         }
 
         private void ShowSelectedLift()
         {
             if (SelectedLift == null) return;
-            
+
             MapItems.SelectedLiftPolyLine = new ObservableCollection<Polyline>();
             var locationPath = "";
             foreach (var node in SelectedLift.Nodes)
-            {
                 locationPath +=
                     $"{node.Latitude.ToString(CultureInfo.InvariantCulture)},{node.Longitude.ToString(CultureInfo.InvariantCulture)} ";
-            }
 
             MapItems.SelectedLiftPolyLine.Add(new Polyline
             {
@@ -288,7 +243,7 @@ namespace GarminAnalyzer.ViewModels
         private void ShowSelectedLap()
         {
             if (SelectedLap == null) return;
-            
+
             MapItems.SeriesCollection = new SeriesCollection();
             MapItems.SelectedLapPolyLine = new ObservableCollection<Polyline>();
             MapItems.SelectedLiftPolyLine = new ObservableCollection<Polyline>();
@@ -325,10 +280,8 @@ namespace GarminAnalyzer.ViewModels
                 var locationPath = "";
 
                 foreach (var node in slope.Nodes)
-                {
                     locationPath +=
                         $"{node.Latitude.ToString(CultureInfo.InvariantCulture)},{node.Longitude.ToString(CultureInfo.InvariantCulture)} ";
-                }
 
 
                 MapItems.Slopes.Add(new Polyline
@@ -357,19 +310,17 @@ namespace GarminAnalyzer.ViewModels
 
                 var locationPath = "";
                 foreach (var node in lift.Nodes)
-                {
                     locationPath +=
                         $"{node.Latitude.ToString(CultureInfo.InvariantCulture)},{node.Longitude.ToString(CultureInfo.InvariantCulture)} ";
-                }
 
                 MapItems.Lifts.Add(new Polyline
                 {
-                    Locations = LocationCollection.Parse(locationPath),
+                    Locations = LocationCollection.Parse(locationPath)
                 });
             }
         }
-        
-        
+
+
         private void DrawMadeSlopes()
         {
             if (!DisplayOptions.ShowMadeNodes) return;
@@ -377,27 +328,48 @@ namespace GarminAnalyzer.ViewModels
             MapItems.MadeNodes = new ObservableCollection<PointItem>();
             var pistes = _wayRepository.GetSlopes();
             foreach (var slope in pistes)
+            foreach (var node in slope.Nodes)
             {
-                foreach (var node in slope.Nodes)
-                {
-                    var trackingPoint = _slopeNodeChecker.Check(node);
-                    if (trackingPoint == null)
+                var trackingPoint = _slopeNodeChecker.Check(node);
+                if (trackingPoint == null)
+                    MapItems.MadeNodes.Add(new PointItem
                     {
-                        MapItems.MadeNodes.Add(new PointItem
-                        {
-                            Location = node.ToLocation()
-                        });
-                    }
-                    else
+                        Location = node.ToLocation()
+                    });
+                else
+                    MapItems.NotMadeNodes.Add(new PointItem
                     {
-                        MapItems.NotMadeNodes.Add(new PointItem
-                        {
-                            Location = node.ToLocation()
-                        });
-                    }
-                }
+                        Location = node.ToLocation()
+                    });
             }
         }
 
+        #region ViewModels
+
+        public DisplayOptions DisplayOptions { get; set; } = new DisplayOptions();
+        public Statistics Statistics { get; set; } = new Statistics();
+        public LiftStatistics LiftStatistics { get; set; } = new LiftStatistics();
+        public MapItems MapItems { get; set; } = new MapItems();
+        public MapLayers MapLayers { get; } = new MapLayers();
+
+        #endregion
+
+        #region Properties
+
+        public Lap SelectedLap { get; set; }
+        public ObservableCollection<Lap> Laps { get; set; }
+        public Way SelectedLift { get; set; }
+        public ObservableCollection<Way> TakenLifts { get; set; } = new ObservableCollection<Way>();
+
+        #endregion
+
+        #region Fields
+
+        private readonly ILiftFinder _liftFinder;
+        private readonly IWayRepository _wayRepository;
+        private readonly ISlopeNodeChecker _slopeNodeChecker;
+        private readonly IStatsService _statsService;
+
+        #endregion
     }
 }

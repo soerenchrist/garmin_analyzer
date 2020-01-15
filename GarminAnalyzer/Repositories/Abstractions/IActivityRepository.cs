@@ -11,6 +11,10 @@ namespace GarminAnalyzer.Repositories.Abstractions
 
     public enum Day
     {
-        Tuesday, Wednesday, Thursday, Friday, Saturday
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday
     }
 }

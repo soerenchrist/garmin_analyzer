@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using GarminAnalyzer.Models;
 using GarminAnalyzer.Repositories.Abstractions;
-using GarminAnalyzer.Services.Abstractions;
 using Newtonsoft.Json;
 
 namespace GarminAnalyzer.Repositories
@@ -27,7 +26,7 @@ namespace GarminAnalyzer.Repositories
                 _activities.Add(filename.Key, activities);
             }
         }
-        
+
         public IEnumerable<Lap> GetAllActivities()
         {
             return _activities.SelectMany(a => a.Value);
@@ -41,18 +40,16 @@ namespace GarminAnalyzer.Repositories
             {
                 lap.Number = counter;
                 lap.Day = day.ToString();
-                
+
                 var slopes = new List<string>();
                 foreach (var trackingPoint in lap.TrackingPoints)
                 {
                     var slopename = trackingPoint.DistanceConnection?.NearestWay?.Ref;
-                    if (slopename == null)
-                    {
-                        continue;
-                    }
+                    if (slopename == null) continue;
                     if (!slopes.Contains(slopename))
                         slopes.Add(slopename);
                 }
+
                 lap.SlopeNames = string.Join(", ", slopes);
                 counter++;
             }

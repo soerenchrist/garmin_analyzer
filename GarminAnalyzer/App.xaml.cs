@@ -5,7 +5,7 @@ using GarminAnalyzer.ViewModels;
 namespace GarminAnalyzer
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App
     {
@@ -18,7 +18,7 @@ namespace GarminAnalyzer
             var window = new MainWindow();
 
             window.DataContext = viewModel;
-            
+
             window.Show();
         }
     }

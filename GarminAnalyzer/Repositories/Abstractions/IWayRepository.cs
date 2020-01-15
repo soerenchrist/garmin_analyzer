@@ -8,7 +8,7 @@ namespace GarminAnalyzer.Repositories.Abstractions
         IEnumerable<Way> GetAllWays();
         IEnumerable<Way> GetSlopes();
         IEnumerable<Way> GetLifts();
-        
+
         int GetTotalLiftCount();
         int GetGondolaLiftCount();
         int GetChairLiftCount();

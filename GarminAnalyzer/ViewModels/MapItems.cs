@@ -7,7 +7,6 @@ namespace GarminAnalyzer.ViewModels
 {
     public class MapItems : ViewModelBase
     {
-        
         public Location MapCenter { get; set; } = new Location(47.0006, 10.297);
         public ObservableCollection<PointItem> MadeNodes { get; set; } = new ObservableCollection<PointItem>();
         public ObservableCollection<PointItem> NotMadeNodes { get; set; } = new ObservableCollection<PointItem>();

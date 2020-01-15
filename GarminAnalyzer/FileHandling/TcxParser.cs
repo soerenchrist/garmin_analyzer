@@ -13,18 +13,13 @@ namespace GarminAnalyzer.FileHandling
     {
         public Task<List<Lap>> ParseFile(string filename)
         {
-            if (!File.Exists(filename))
-            {
-                throw new FileNotFoundException($"File {filename} does not exist");
-            }
+            if (!File.Exists(filename)) throw new FileNotFoundException($"File {filename} does not exist");
 
             if (Path.GetExtension(filename)?.ToUpper() != ".TCX")
-            {
                 throw new ArgumentException("Only files with extension .tcx possible");
-            }
-            
+
             var results = new List<Lap>();
-            
+
             var document = new XmlDocument();
             document.Load(filename);
 
@@ -40,7 +35,6 @@ namespace GarminAnalyzer.FileHandling
                 var lap = new Lap();
                 lap.StartTime = DateTime.Parse(lapNode.Attributes?["StartTime"].InnerText);
                 foreach (XmlNode childNode in lapNode.ChildNodes)
-                {
                     switch (childNode.Name)
                     {
                         case "TotalTimeSeconds":
@@ -67,7 +61,6 @@ namespace GarminAnalyzer.FileHandling
                             {
                                 var trackPoint = new TrackingPoint();
                                 foreach (XmlNode attributeNode in trackNode.ChildNodes)
-                                {
                                     switch (attributeNode.Name)
                                     {
                                         case "Time":
@@ -76,9 +69,11 @@ namespace GarminAnalyzer.FileHandling
                                         case "Position":
                                             trackPoint.Position = new Position();
                                             trackPoint.Position.Latitude =
-                                                double.Parse(attributeNode.FirstChild.InnerText, CultureInfo.InvariantCulture);
+                                                double.Parse(attributeNode.FirstChild.InnerText,
+                                                    CultureInfo.InvariantCulture);
                                             trackPoint.Position.Longitude =
-                                                double.Parse(attributeNode.LastChild.InnerText, CultureInfo.InvariantCulture);
+                                                double.Parse(attributeNode.LastChild.InnerText,
+                                                    CultureInfo.InvariantCulture);
                                             break;
                                         case "AltitudeMeters":
                                             trackPoint.Altitude = double.Parse(attributeNode.InnerText,
@@ -97,12 +92,13 @@ namespace GarminAnalyzer.FileHandling
                                                     CultureInfo.InvariantCulture);
                                             break;
                                     }
-                                }
+
                                 lap.TrackingPoints.Add(trackPoint);
                             }
+
                             break;
                     }
-                }
+
                 results.Add(lap);
             }
 

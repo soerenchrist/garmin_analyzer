@@ -14,7 +14,8 @@ namespace GarminAnalyzer.Models
 
         public override string ToString()
         {
-            return $"Zeit: {Time.ToLongTimeString()} \nHöhe: {Altitude}m, \nHerzfrequenz: {HeartRate}, \nGeschwindigkeit: {Math.Round(Speed*3.6, 2)}km/h";
+            return
+                $"Zeit: {Time.ToLongTimeString()} \nHöhe: {Altitude}m, \nHerzfrequenz: {HeartRate}, \nGeschwindigkeit: {Math.Round(Speed * 3.6, 2)}km/h";
         }
     }
 }

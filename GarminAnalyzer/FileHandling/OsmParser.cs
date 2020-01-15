@@ -13,24 +13,19 @@ namespace GarminAnalyzer.FileHandling
     {
         public Task<List<Way>> ParseOsm(string filename, int relationId)
         {
-            if (!File.Exists(filename))
-            {
-                throw new FileNotFoundException($"File {filename} does not exist");
-            }
+            if (!File.Exists(filename)) throw new FileNotFoundException($"File {filename} does not exist");
 
             if (Path.GetExtension(filename)?.ToUpper() != ".OSM")
-            {
                 throw new ArgumentException("Only files with extension .osm possible");
-            }
             var results = new List<Way>();
-            
+
             var document = new XmlDocument();
             document.Load(filename);
-            
+
             var references = new List<string>();
 
             if (document.DocumentElement?.ChildNodes == null) return Task.FromResult(results);
-            
+
             foreach (XmlNode node in document.DocumentElement?.ChildNodes)
             {
                 if (node.Name != "relation") continue;
@@ -38,14 +33,12 @@ namespace GarminAnalyzer.FileHandling
                     continue;
 
                 foreach (XmlNode relationNode in node.ChildNodes)
-                {
                     if (relationNode.Attributes != null)
                     {
                         if (relationNode.Attributes["type"]?.InnerText != "way") continue;
                         var reference = relationNode.Attributes["ref"]?.InnerText;
                         references.Add(reference);
                     }
-                }
             }
 
             foreach (XmlNode node in document.DocumentElement.ChildNodes)
@@ -60,14 +53,13 @@ namespace GarminAnalyzer.FileHandling
                 way.Nodes = new List<Position>();
 
                 foreach (XmlNode childNode in node.ChildNodes)
-                {
                     if (childNode.Name == "nd")
                     {
-                        Position position = NodeLookup(childNode.Attributes?["ref"].InnerText,
+                        var position = NodeLookup(childNode.Attributes?["ref"].InnerText,
                             document.DocumentElement);
                         if (position == null) continue;
 
-                        var nodeObject = new Position()
+                        var nodeObject = new Position
                         {
                             Latitude = position.Latitude,
                             Longitude = position.Longitude
@@ -110,7 +102,6 @@ namespace GarminAnalyzer.FileHandling
                                 break;
                         }
                     }
-                }
 
                 results.Add(way);
             }
@@ -127,13 +118,10 @@ namespace GarminAnalyzer.FileHandling
                 if (childNode.Name != "node") continue;
 
                 var id = childNode.Attributes?["id"].InnerText;
-                if (id == null || id != nodeId)
-                {
-                    continue;
-                }
-                
-                string longitude = childNode.Attributes?["lon"].InnerText;
-                string latitude = childNode.Attributes?["lat"].InnerText;
+                if (id == null || id != nodeId) continue;
+
+                var longitude = childNode.Attributes?["lon"].InnerText;
+                var latitude = childNode.Attributes?["lat"].InnerText;
 
                 var position = new Position
                 {

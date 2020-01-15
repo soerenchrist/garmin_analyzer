@@ -1,7 +1,6 @@
 ﻿using System.Device.Location;
 using System.Linq;
 using GarminAnalyzer.Models;
-using GarminAnalyzer.Repositories;
 using GarminAnalyzer.Repositories.Abstractions;
 using GarminAnalyzer.Services.Abstractions;
 
@@ -15,7 +14,7 @@ namespace GarminAnalyzer.Services
         {
             _activityRepository = activityRepository;
         }
-        
+
         public TrackingPoint Check(Position node)
         {
             const double threshold = 50;
@@ -29,14 +28,10 @@ namespace GarminAnalyzer.Services
                 var geoTracking = new GeoCoordinate(trackingPoint.Position.Latitude, trackingPoint.Position.Longitude);
                 var distance = geoTracking.GetDistanceTo(geoNode);
 
-                if (distance < threshold)
-                {
-                    return trackingPoint;
-                }
+                if (distance < threshold) return trackingPoint;
             }
 
             return null;
         }
-
     }
 }
