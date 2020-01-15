@@ -1,0 +1,297 @@
+﻿<Window x:Class="GarminAnalyzer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mapControl="clr-namespace:MapControl;assembly=MapControl.WPF"
+        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        WindowState="Maximized"
+        Title="GarminAnalyzer" Height="350" Width="525">
+    <Window.Resources>
+        
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="240" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical"
+                    Grid.Column="0"
+                    Grid.Row="0">
+            <Label FontSize="20"
+                   Content="Max Speed" />
+            <Label FontSize="20"
+                   FontWeight="ExtraBlack"
+                   Content="{Binding Statistics.MaxSpeed, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=km/h}"/>
+            
+            <Label FontSize="20"
+                   Content="Max HeartRate" />
+            <Label FontSize="20"
+                   FontWeight="ExtraBlack"
+                   Content="{Binding Statistics.MaxHeartRate}"/>
+            
+            <wpf:CartesianChart Series="{Binding MapItems.SeriesCollection}"
+                                Height="200"/>
+            <ListView ItemsSource="{Binding Laps}"
+                      Margin="0,0,0,300"
+                      SelectedItem="{Binding SelectedLap}">
+                <ListView.View>
+                    <GridView>
+                        
+                        <GridViewColumn Header="Tag"
+                                        DisplayMemberBinding="{Binding Day}"
+                                        Width="50"/>
+                        <GridViewColumn Header="Abfahrt"
+                                        DisplayMemberBinding="{Binding Number}"
+                                        Width="30"/>
+                        
+                        <GridViewColumn Header="Distanz"
+                                        DisplayMemberBinding="{Binding FormattedDistance}"
+                                        Width="60"/>
+                        
+                        <GridViewColumn Header="Zeit"
+                                        DisplayMemberBinding="{Binding FormattedTime}"
+                                        Width="60"/>
+                        
+                        <GridViewColumn Header="Pisten"
+                                        DisplayMemberBinding="{Binding SlopeNames}"
+                                        Width="60"/>
+                        
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+        
+        <mapControl:Map x:Name="Map" 
+                        Grid.Row="0"
+                        Grid.Column="1" ZoomLevel="11" MaxZoomLevel="21"
+                 Center="{Binding MapItems.MapCenter}"
+                 MapLayer="{Binding MapLayers.CurrentMapLayer}"
+                 MapProjection="{Binding SelectedValue, ElementName=ProjectionComboBox,
+                                         FallbackValue={StaticResource WebMercatorProjection},
+                                         TargetNullValue={StaticResource WebMercatorProjection}}"
+                 MouseLeftButtonDown="MapMouseLeftButtonDown"
+                 MouseMove="MapMouseMove" MouseLeave="MapMouseLeave"
+                 ManipulationInertiaStarting="MapManipulationInertiaStarting" >
+
+            <mapControl:MapScale HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.Slopes}"
+                                 ItemTemplate="{StaticResource SlopeItemTemplate}"/>
+            
+            
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.Laps}"
+                                        ItemTemplate="{StaticResource LapItemTemplate}"/>
+            
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.SpeedLine}"
+                                        ItemTemplate="{StaticResource SpeedLineTemplate}"/>
+            
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.SelectedLiftPolyLine}"
+                                        ItemTemplate="{StaticResource SelectedLiftItemtemplate}"/>
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.SelectedLapPolyLine}"
+                                        ItemTemplate="{StaticResource SelectedLapItemtemplate}"/>
+            
+            
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.Lifts}"
+                                        ItemTemplate="{StaticResource LiftItemTemplate}"/>
+
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.EasyPoints}"
+                                        TouchDown="MapItemTouchDown"
+                                 ItemContainerStyle="{StaticResource EasyPointItemStyle}"
+                                 SelectionMode="Extended"/>
+
+            
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.AdvancedPoints}"
+                                        ItemContainerStyle="{StaticResource AdvancedPointItemStyle}"
+                                        SelectionMode="Extended"/>
+            
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.IntermediatePoints}"
+                                        ItemContainerStyle="{StaticResource IntermediatePointItemStyle}"
+                                        SelectionMode="Extended"/>
+            
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.MadeNodes}"
+                                        TouchDown="MapItemTouchDown"
+                                        ItemContainerStyle="{StaticResource MadeNodeItemStyle}"
+                                        SelectionMode="Extended"/>
+            
+            
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.NotMadeNodes}"
+                                        TouchDown="MapItemTouchDown"
+                                        ItemContainerStyle="{StaticResource NotMadeNodeItemStyle}"
+                                        SelectionMode="Extended"/>
+
+            <mapControl:MapItemsControl ItemsSource="{Binding MapItems.Pushpins}"
+                                 ItemContainerStyle="{StaticResource PushpinItemStyle}"/>
+        </mapControl:Map>
+
+        <Grid Grid.Row="1"
+              Grid.Column="0"
+              Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="MouseLocation" Margin="5" VerticalAlignment="Bottom" FontFamily="Segoe UI Mono"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                
+                
+                <CheckBox Margin="7" VerticalAlignment="Bottom" Content="Zeige Trackpoints"
+                          IsChecked="{Binding DisplayOptions.ShowTrackpoints}"/>
+                <CheckBox Margin="7" VerticalAlignment="Bottom" Content="Zeige Geschwindigkeiten"
+                          IsChecked="{Binding DisplayOptions.ShowSpeeds}"/>
+                
+                <CheckBox Margin="7" VerticalAlignment="Bottom" Content="Zeige Herzfrequenz"
+                          IsChecked="{Binding DisplayOptions.ShowHeartRates}"/>
+                <CheckBox Margin="7" VerticalAlignment="Bottom" Content="Liftnamen anzeigen"
+                          IsChecked="{Binding DisplayOptions.ShowLiftNames}"/>
+                <CheckBox Margin="7" VerticalAlignment="Bottom" Content="Pistenanfang anzeigen"
+                          IsChecked="{Binding DisplayOptions.ShowLapStarts}"/>
+                
+                <CheckBox Margin="7" VerticalAlignment="Bottom" Content="Ereichte Pisten anzeigen"
+                          IsChecked="{Binding DisplayOptions.ShowMadeNodes}"/>
+                
+                <ComboBox x:Name="ProjectionComboBox" ToolTip="Map Projection" Width="120" Margin="5" VerticalAlignment="Bottom"
+                          SelectedValuePath="Tag" SelectedIndex="0">
+                    <ComboBoxItem Content="Web Mercator" Tag="{StaticResource WebMercatorProjection}"/>
+                    <ComboBoxItem Content="World Mercator" Tag="{StaticResource WorldMercatorProjection}"/>
+                    <ComboBoxItem Content="Equirectangular" Tag="{StaticResource EquirectangularProjection}"/>
+                    <ComboBoxItem Content="Orthographic" Tag="{StaticResource OrthographicProjection}"/>
+                    <ComboBoxItem Content="Gnomonic" Tag="{StaticResource GnomonicProjection}"/>
+                    <ComboBoxItem Content="Stereographic" Tag="{StaticResource StereographicProjection}"/>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+        <StackPanel Orientation="Horizontal"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="2">
+                    <ToggleButton IsChecked="{Binding DisplayOptions.ShowTuesday}"
+                                  Content="Dienstag"
+                                  Margin="5"/>
+                    <ToggleButton IsChecked="{Binding DisplayOptions.ShowWednesday}"
+                                  Margin="5"
+                                  Content="Mittwoch" />
+                    <ToggleButton IsChecked="{Binding DisplayOptions.ShowThursday}"
+                                  Margin="5"
+                                  Content="Donnerstag" />
+                    <ToggleButton IsChecked="{Binding DisplayOptions.ShowFriday}"
+                                  Margin="5"
+                                  Content="Freitag" />
+                    <ToggleButton IsChecked="{Binding DisplayOptions.ShowSaturday}"
+                                  Margin="5"
+                                  Content="Samstag" />
+        </StackPanel>
+        <Grid Grid.Column="2"
+                    Grid.Row="0"
+                    Grid.RowSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Blaue Pisten" 
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   />
+            <Label Content="{Binding Statistics.PercentageEasy, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=%}"
+                   Foreground="Blue"
+                   Grid.Column="0"
+                   Grid.Row="1"
+                   FontWeight="ExtraBlack"/>
+            
+            <Label Content="Rote Pisten"
+                   Grid.Column="1"
+                   Grid.Row="0"/>
+            <Label Content="{Binding Statistics.PercentageIntermediate, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=%}"
+                   Foreground="Red"
+                   Grid.Column="1"
+                   Grid.Row="1"
+                   FontWeight="ExtraBlack"/>
+            
+            <Label Content="Schwarze Pisten"
+                   Grid.Column="0"
+                   Grid.Row="2"/>
+            <Label Content="{Binding Statistics.PercentageAdvanced, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=%}"
+                   Foreground="Black"
+                   Grid.Column="0"
+                   Grid.Row="3"
+                   FontWeight="ExtraBlack"/>
+            
+            
+            <Label Content="Gesamtstrecke"
+                   Grid.Column="1"
+                   Grid.Row="2"/>
+            <Label Content="{Binding Statistics.TotalDistance, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=km}"
+                   Foreground="Black"
+                   Grid.Column="1"
+                   Grid.Row="3"
+                   FontWeight="ExtraBlack"/>
+            
+            
+            <Label Content="Höhenmeter Piste" 
+                   Grid.Column="0"
+                   Grid.Row="4"
+                   Grid.ColumnSpan="2" />
+            <Label Content="{Binding Statistics.TotalAltitude, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=m}"
+                   Foreground="Black"
+                   Grid.Column="0"
+                   Grid.Row="5"
+                   FontWeight="ExtraBlack"/>
+            
+            <Label Content="Lifte/Sessel/Gondel"
+                   Grid.Column="0"
+                   Grid.Row="6"
+                   Grid.ColumnSpan="2"/>
+            <Label Content="{Binding LiftStatistics.FormattedLiftCount}"
+                   Grid.Column="0"
+                   Grid.Row="7"
+                   FontWeight="ExtraBlack"
+                   Grid.ColumnSpan="2"/>
+            
+            <Label Content="Gefahrene Lifte"
+                   Grid.Column="0"
+                   Grid.Row="8"
+                   Grid.ColumnSpan="2"/>
+            <Label Content="{Binding LiftStatistics.TakenLiftCount}"
+                   Grid.Column="0"
+                   Grid.Row="9"
+                   FontWeight="ExtraBlack"
+                   Grid.ColumnSpan="2"/>
+            
+            <ListView ItemsSource="{Binding TakenLifts}"
+                      Grid.Row="10"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Margin="0,0,0,100"
+                      SelectedItem="{Binding SelectedLift}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Liftname"
+                                        DisplayMemberBinding="{Binding Name}"
+                                        Width="120"/>
+                        
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </Grid>
+</Window>

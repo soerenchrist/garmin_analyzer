@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\cso\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\cso\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_GarminAnalyzer.97603673.00" t="ExcludeRecursive" />
+    <e p="C:\Users\cso\dev\GarminAnalyzer" t="IncludeFlat">
+      <e p="GarminAnalyzer" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="App.xaml" t="Include" />
+        <e p="App.xaml.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Bootstrap" t="Include">
+          <e p="AppContainer.cs" t="Include" />
+        </e>
+        <e p="FileHandling" t="Include">
+          <e p="Abstractions" t="Include">
+            <e p="IFileParser.cs" t="Include" />
+            <e p="IOsmParser.cs" t="Include" />
+          </e>
+          <e p="OsmParser.cs" t="Include" />
+          <e p="TcxParser.cs" t="Include" />
+        </e>
+        <e p="GarminAnalyzer.csproj" t="IncludeRecursive" />
+        <e p="MainWindow.xaml" t="Include" />
+        <e p="MainWindow.xaml.cs" t="Include" />
+        <e p="Models" t="Include">
+          <e p="Distance.cs" t="Include" />
+          <e p="Lap.cs" t="Include" />
+          <e p="Position.cs" t="Include" />
+          <e p="TrackingPoint.cs" t="Include" />
+          <e p="Way.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="App.g.cs" t="Include" />
+            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
+            <e p="MainWindow.g.cs" t="Include" />
+          </e>
+        </e>
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+        </e>
+        <e p="Repositories" t="Include">
+          <e p="Abstractions" t="Include">
+            <e p="IActivityRepository.cs" t="Include" />
+            <e p="IWayRepository.cs" t="Include" />
+          </e>
+          <e p="ActivityRepository.cs" t="Include" />
+          <e p="WayRepository.cs" t="Include" />
+        </e>
+        <e p="Services" t="Include">
+          <e p="Abstractions" t="Include">
+            <e p="ILiftFinder.cs" t="Include" />
+            <e p="ISlopeFinder.cs" t="Include" />
+            <e p="ISlopeNodeChecker.cs" t="Include" />
+            <e p="IStatsService.cs" t="Include" />
+          </e>
+          <e p="LiftFinder.cs" t="Include" />
+          <e p="SlopeFinder.cs" t="Include" />
+          <e p="SlopeNodeChecker.cs" t="Include" />
+          <e p="StatsService.cs" t="Include" />
+        </e>
+        <e p="Util" t="Include">
+          <e p="ColorHelper.cs" t="Include" />
+          <e p="DisplayFormatConverter.cs" t="Include" />
+          <e p="LocationToVisibilityConverter.cs" t="Include" />
+          <e p="LocationUtil.cs" t="Include" />
+          <e p="MapLayers.cs" t="Include" />
+          <e p="NumberUtil.cs" t="Include" />
+        </e>
+        <e p="ViewModels" t="Include">
+          <e p="Base" t="Include">
+            <e p="ViewModelBase.cs" t="Include" />
+          </e>
+          <e p="DisplayOptions.cs" t="Include" />
+          <e p="LiftStatistics.cs" t="Include" />
+          <e p="MainViewModel.cs" t="Include" />
+          <e p="MapItems.cs" t="Include" />
+          <e p="Statistics.cs" t="Include" />
+        </e>
+      </e>
+      <e p="GarminAnalyzer.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
