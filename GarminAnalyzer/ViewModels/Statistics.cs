@@ -4,6 +4,7 @@ namespace GarminAnalyzer.ViewModels
 {
     public class Statistics : ViewModelBase
     {
+        public bool Loading { get; set; }
         public double PercentageEasy { get; set; }
         public double PercentageIntermediate { get; set; }
         public double PercentageAdvanced { get; set; }
@@ -13,5 +14,7 @@ namespace GarminAnalyzer.ViewModels
 
         public double MaxSpeed { get; set; }
         public double MaxHeartRate { get; set; }
+
+        public double SlopeLength { get; set; }
     }
 }

@@ -47,6 +47,10 @@
       <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LoadingIndicators.WPF, Version=0.0.1.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\LoadingIndicators.WPF.0.0.1\lib\LoadingIndicators.WPF.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MapControl.WPF, Version=4.16.0.0, Culture=neutral, PublicKeyToken=f26fcf0059638459">
       <HintPath>..\packages\XAML.MapControl.4.16.0\lib\net462\MapControl.WPF.dll</HintPath>
       <Private>True</Private>
@@ -94,14 +98,17 @@
     <Compile Include="Repositories\WayRepository.cs" />
     <Compile Include="Services\Abstractions\ILiftFinder.cs" />
     <Compile Include="Services\Abstractions\ISlopeFinder.cs" />
+    <Compile Include="Services\Abstractions\ISlopeLengthCalculator.cs" />
     <Compile Include="Services\Abstractions\ISlopeNodeChecker.cs" />
     <Compile Include="Services\Abstractions\IStatsService.cs" />
     <Compile Include="Services\LiftFinder.cs" />
     <Compile Include="Services\SlopeFinder.cs" />
+    <Compile Include="Services\SlopeLengthCalculator.cs" />
     <Compile Include="Services\SlopeNodeChecker.cs" />
     <Compile Include="Services\StatsService.cs" />
     <Compile Include="Util\ColorHelper.cs" />
     <Compile Include="Util\DisplayFormatConverter.cs" />
+    <Compile Include="Util\Helpers.cs" />
     <Compile Include="Util\LocationToVisibilityConverter.cs" />
     <Compile Include="Util\LocationUtil.cs" />
     <Compile Include="Util\MapLayers.cs" />

@@ -24,7 +24,7 @@ namespace GarminAnalyzer
             InitializeComponent();
 
             // Uncomment to preprocess osm and tcx files
-            Preprocess();
+            //Preprocess();
         }
 
         // Preprocess OSM and TCX files to improve performance

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\cso\.Rider2019.3\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\cso\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_GarminAnalyzer.97603673.00" t="ExcludeRecursive" />
-    <e p="C:\Users\cso\dev\GarminAnalyzer" t="IncludeFlat">
+    <e p="C:\Users\chris\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\chris\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_GarminAnalyzer.1990208266.00" t="ExcludeRecursive" />
+    <e p="C:\Users\chris\dev\garmin_analyzer" t="IncludeFlat">
       <e p="GarminAnalyzer" t="IncludeRecursive">
         <e p="App.config" t="Include" />
         <e p="App.xaml" t="Include" />
@@ -30,13 +30,7 @@
           <e p="TrackingPoint.cs" t="Include" />
           <e p="Way.cs" t="Include" />
         </e>
-        <e p="obj" t="ExcludeRecursive">
-          <e p="Debug" t="Include">
-            <e p="App.g.cs" t="Include" />
-            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
-            <e p="MainWindow.g.cs" t="Include" />
-          </e>
-        </e>
+        <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
@@ -55,17 +49,20 @@
           <e p="Abstractions" t="Include">
             <e p="ILiftFinder.cs" t="Include" />
             <e p="ISlopeFinder.cs" t="Include" />
+            <e p="ISlopeLengthCalculator.cs" t="Include" />
             <e p="ISlopeNodeChecker.cs" t="Include" />
             <e p="IStatsService.cs" t="Include" />
           </e>
           <e p="LiftFinder.cs" t="Include" />
           <e p="SlopeFinder.cs" t="Include" />
+          <e p="SlopeLengthCalculator.cs" t="Include" />
           <e p="SlopeNodeChecker.cs" t="Include" />
           <e p="StatsService.cs" t="Include" />
         </e>
         <e p="Util" t="Include">
           <e p="ColorHelper.cs" t="Include" />
           <e p="DisplayFormatConverter.cs" t="Include" />
+          <e p="Helpers.cs" t="Include" />
           <e p="LocationToVisibilityConverter.cs" t="Include" />
           <e p="LocationUtil.cs" t="Include" />
           <e p="MapLayers.cs" t="Include" />

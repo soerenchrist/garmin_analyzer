@@ -22,7 +22,6 @@ namespace GarminAnalyzer.Bootstrap
             builder.RegisterType<ActivityRepository>().As<IActivityRepository>().SingleInstance();
             builder.RegisterType<WayRepository>().As<IWayRepository>().SingleInstance();
 
-
             builder.RegisterType<OsmParser>().As<IOsmParser>();
             builder.RegisterType<TcxParser>().As<IFileParser>();
 
@@ -30,6 +29,7 @@ namespace GarminAnalyzer.Bootstrap
             builder.RegisterType<SlopeFinder>().As<ISlopeFinder>();
             builder.RegisterType<SlopeNodeChecker>().As<ISlopeNodeChecker>();
             builder.RegisterType<StatsService>().As<IStatsService>();
+            builder.RegisterType<SlopeLengthCalculator>().As<ISlopeLengthCalculator>();
 
             _container = builder.Build();
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GarminAnalyzer.Models;
 using GarminAnalyzer.Repositories.Abstractions;
 using GarminAnalyzer.Services.Abstractions;
@@ -11,16 +12,20 @@ namespace GarminAnalyzer.Services
     {
         private readonly IActivityRepository _activityRepository;
         private readonly IWayRepository _wayRepository;
+        private readonly ISlopeLengthCalculator _slopeLengthCalculator;
 
         public StatsService(IActivityRepository activityRepository,
-            IWayRepository wayRepository)
+            IWayRepository wayRepository,
+            ISlopeLengthCalculator slopeLengthCalculator)
         {
             _activityRepository = activityRepository;
             _wayRepository = wayRepository;
+            _slopeLengthCalculator = slopeLengthCalculator;
         }
 
-        public Statistics CalculateStatistics(IEnumerable<TrackingPoint> trackingPoints)
+        public async Task<Statistics> CalculateStatistics(IEnumerable<TrackingPoint> trackingPoints)
         {
+            
             var allActivities = _activityRepository.GetAllActivities();
             var enumerable = trackingPoints as TrackingPoint[] ?? trackingPoints.ToArray();
 
@@ -32,7 +37,13 @@ namespace GarminAnalyzer.Services
             var countAdvanced = enumerable.Count(a =>
                 a.DistanceConnection?.NearestWay?.Difficulty == "advanced");
 
+            var slopeLength = await _slopeLengthCalculator.CalculateLength();
+            
             var activities = allActivities as Lap[] ?? allActivities.ToArray();
+            if (countAll == 0)
+            {
+                return new Statistics();
+            }
             var statistics = new Statistics
             {
                 MaxSpeed = enumerable.Max(t => t.Speed) * 3.6,
@@ -41,7 +52,9 @@ namespace GarminAnalyzer.Services
                 PercentageAdvanced = (double) countAdvanced / countAll * 100,
                 PercentageIntermediate = (double) countIntermediate / countAll * 100,
                 TotalAltitude = activities.Sum(a => a.TotalDistance),
-                TotalDistance = activities.SelectMany(a => a.TrackingPoints).Sum(a => a.Altitude) / 1000
+                TotalDistance = activities.SelectMany(a => a.TrackingPoints).Sum(a => a.Altitude) / 1000000,
+                SlopeLength = slopeLength / 1000,
+                Loading = false
             };
 
             return statistics;

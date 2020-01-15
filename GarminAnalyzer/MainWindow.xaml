@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mapControl="clr-namespace:MapControl;assembly=MapControl.WPF"
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:wpf1="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
         mc:Ignorable="d"
         WindowState="Maximized"
         Title="GarminAnalyzer" Height="350" Width="525">
     <Window.Resources>
 
     </Window.Resources>
-    <Grid>
+    <Grid Style="{StaticResource Background}">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="100" />
@@ -22,26 +23,49 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="240" />
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical"
+        <Grid
+            Margin="8"
                     Grid.Column="0"
                     Grid.Row="0">
-            <Label FontSize="20"
-                   Content="Max Speed" />
-            <Label FontSize="20"
-                   FontWeight="ExtraBlack"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <wpf1:LoadingIndicator Grid.Row="0"
+                                   Grid.RowSpan="8"
+                                   IsActive="{Binding Statistics.Loading}" 
+                                   />
+            <Label Content="Max Speed"
+                   Grid.Row="0"/>
+            <Label Style="{StaticResource HeadingLabel}"
+                   Grid.Row="1"
                    Content="{Binding Statistics.MaxSpeed, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=km/h}" />
 
-            <Label FontSize="20"
+            <Label Grid.Row="2"
                    Content="Max HeartRate" />
-            <Label FontSize="20"
-                   FontWeight="ExtraBlack"
+            <Label Grid.Row="3"
+                   Style="{StaticResource HeadingLabel}"
                    Content="{Binding Statistics.MaxHeartRate}" />
+            <Label Grid.Row="4"
+                   Content="Pistenkilometer gesamt" />
+            <Label Grid.Row="5"
+                   Style="{StaticResource HeadingLabel}"
+                   Content="{Binding Statistics.SlopeLength, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=km}" />
 
             <wpf:CartesianChart Series="{Binding MapItems.SeriesCollection}"
-                                Height="200" />
+                                Height="200"
+                                Grid.Row="6"/>
             <ListView ItemsSource="{Binding Laps}"
-                      Margin="0,0,0,300"
-                      SelectedItem="{Binding SelectedLap}">
+                      Margin="0,0,0,0"
+                      Grid.Row="7"
+                      SelectedItem="{Binding SelectedLap}"
+                      >
                 <ListView.View>
                     <GridView>
 
@@ -67,7 +91,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-        </StackPanel>
+        </Grid>
 
         <mapControl:Map x:Name="Map"
                         Grid.Row="0"
@@ -191,6 +215,7 @@
         </StackPanel>
         <Grid Grid.Column="2"
               Grid.Row="0"
+              Margin="8"
               Grid.RowSpan="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -209,46 +234,44 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label Content="Blaue Pisten"
+            <Label Content="Blau"
                    Grid.Column="0"
                    Grid.Row="0" />
             <Label
                 Content="{Binding Statistics.PercentageEasy, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=%}"
-                Foreground="Blue"
                 Grid.Column="0"
                 Grid.Row="1"
-                FontWeight="ExtraBlack" />
+                Style="{StaticResource HeadingLabel}"/>
 
-            <Label Content="Rote Pisten"
+            <Label Content="Rot"
                    Grid.Column="1"
                    Grid.Row="0" />
             <Label
                 Content="{Binding Statistics.PercentageIntermediate, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=%}"
-                Foreground="Red"
+                Style="{StaticResource HeadingLabel}"
                 Grid.Column="1"
                 Grid.Row="1"
-                FontWeight="ExtraBlack" />
+                />
 
-            <Label Content="Schwarze Pisten"
+            <Label Content="Schwarz"
                    Grid.Column="0"
                    Grid.Row="2" />
             <Label
                 Content="{Binding Statistics.PercentageAdvanced, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=%}"
-                Foreground="Black"
                 Grid.Column="0"
                 Grid.Row="3"
-                FontWeight="ExtraBlack" />
+                Style="{StaticResource HeadingLabel}"
+                />
 
 
-            <Label Content="Gesamtstrecke"
+            <Label Content="Gesamt"
                    Grid.Column="1"
                    Grid.Row="2" />
             <Label
                 Content="{Binding Statistics.TotalDistance, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=km}"
-                Foreground="Black"
+                Style="{StaticResource HeadingLabel}"
                 Grid.Column="1"
-                Grid.Row="3"
-                FontWeight="ExtraBlack" />
+                Grid.Row="3" />
 
 
             <Label Content="Höhenmeter Piste"
@@ -257,10 +280,10 @@
                    Grid.ColumnSpan="2" />
             <Label
                 Content="{Binding Statistics.TotalAltitude, Converter={StaticResource DisplayFormatConverter}, ConverterParameter=m}"
-                Foreground="Black"
                 Grid.Column="0"
                 Grid.Row="5"
-                FontWeight="ExtraBlack" />
+                Style="{StaticResource HeadingLabel}"
+                />
 
             <Label Content="Lifte/Sessel/Gondel"
                    Grid.Column="0"
@@ -269,7 +292,7 @@
             <Label Content="{Binding LiftStatistics.FormattedLiftCount}"
                    Grid.Column="0"
                    Grid.Row="7"
-                   FontWeight="ExtraBlack"
+                   Style="{StaticResource HeadingLabel}"
                    Grid.ColumnSpan="2" />
 
             <Label Content="Gefahrene Lifte"
@@ -279,7 +302,7 @@
             <Label Content="{Binding LiftStatistics.TakenLiftCount}"
                    Grid.Column="0"
                    Grid.Row="9"
-                   FontWeight="ExtraBlack"
+                   Style="{StaticResource HeadingLabel}"
                    Grid.ColumnSpan="2" />
 
             <ListView ItemsSource="{Binding TakenLifts}"

@@ -166,9 +166,10 @@ namespace GarminAnalyzer.ViewModels
             }
         }
 
-        private void CalculateStats(IEnumerable<TrackingPoint> allTrackingPoints)
+        private async void CalculateStats(IEnumerable<TrackingPoint> allTrackingPoints)
         {
-            Statistics = _statsService.CalculateStatistics(allTrackingPoints);
+            Statistics.Loading = true;
+            Statistics = await _statsService.CalculateStatistics(allTrackingPoints);
         }
 
         private void ShowTrackingPoints(Lap lap)
